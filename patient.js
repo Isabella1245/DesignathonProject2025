@@ -1,5 +1,8 @@
-// Sidebar toggle and tab switching
-(function () {
+document.addEventListener("DOMContentLoaded", () => {
+
+    // =======================
+    // Sidebar toggle
+    // =======================
     const profileBtn = document.getElementById('profileBtn');
     const sidebar = document.getElementById('sidebar');
     const closeBtn = document.getElementById('closeBtn');
@@ -22,189 +25,113 @@
         btn.addEventListener('click', () => {
             const target = btn.getAttribute('data-tab');
             panels.forEach(p => p.classList.toggle('active', p.id === target));
-            // keep sidebar open or close depending on preference:
-            // closeSidebar();
+            closeSidebar();
         });
     });
 
-
-    // close on Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeSidebar();
     });
-
-    // click outside to close
     document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target) && !profileBtn.contains(e.target)) {
-            closeSidebar();
+        if (!sidebar.contains(e.target) && !profileBtn.contains(e.target)) closeSidebar();
+    });
+
+    // =======================
+    // Profile persistence
+    // =======================
+    const profileFields = [
+        "profileName",
+        "profileDOB",
+        "profileGender",
+        "profileEmail",
+        "profilePhoneNum",
+        "profileAddress",
+        "profileInsurance",
+        "profilePharmacy",
+        "profilePrimaryClinic"
+    ];
+
+    profileFields.forEach(id => {
+        const savedValue = localStorage.getItem(id);
+        if (savedValue) {
+            const span = document.getElementById(id);
+            if (span) span.textContent = savedValue;
+            if (id === "profileName") {
+                const headerName = document.querySelector('.profile-container h1');
+                if (headerName) headerName.textContent = savedValue;
+            }
         }
     });
-})();
 
-const editProfileBtn = document.getElementById('editProfile');
-const profileBtn = document.getElementById('profileBtn');
-const profileTab = document.getElementById("profile");
-const allTabs = document.querySelectorAll(".tab-panel");
+    // =======================
+    // Edit Profile
+    // =======================
+    const editProfileBtn = document.getElementById('editProfile');
+    const profileTab = document.getElementById("profile");
 
+    editProfileBtn.addEventListener('click', () => {
+        panels.forEach(tab => tab.classList.remove("active"));
+        profileTab.classList.add("active");
 
-editProfileBtn.addEventListener('click', () => {
-    allTabs.forEach(tab => tab.classList.remove("active"));
-    profileTab.classList.add("active");
+        const fields = profileFields.map(id => {
+            const span = document.getElementById(id);
+            return { id, type: (id === "profileDOB" ? "date" : "text"), value: span ? span.textContent : "" };
+        });
 
-    const fields = [
-        { id: "profileName", type: "text" },
-        { id: "profileDOB", type: "date" },
-        { id: "profileGender", type: "text" },
-        { id: "profileEmail", type: "text" },
-        { id: "profilePhoneNum", type: "text" },
-        { id: "profileAddress", type: "text" },
-        { id: "profileInsurance", type: "text" },
-        { id: "profilePharmacy", type: "text" },
-        { id: "profilePrimaryClinic", type: "text" }
-    ];
-    fields.forEach(field => {
-        const span = document.getElementById(field.id);
-        const value = span.textContent;
-
-        const input = document.createElement("input");
-        input.type = field.type;
-        input.value = value;
-        input.id = field.id; // keep same ID for saving later
-
-        span.replaceWith(input);
-    });
-
-    // Optionally, add a Save button
-    const saveBtn = document.createElement("button");
-    saveBtn.textContent = "Save Changes";
-    saveBtn.addEventListener("click", () => {
         fields.forEach(field => {
-            const input = document.getElementById(field.id);
-            const newValue = input.value || input.textContent; // if empty, keep old
-            const span = document.createElement("span");
-            span.id = field.id;
-            span.textContent = newValue;
-            input.replaceWith(span);
-            
-            // Update the header name if profileName was changed
-            if (field.id === "profileName") {
-                const headerName = document.querySelector('.profile-container h1');
-                if (headerName) {
-                    headerName.textContent = newValue;
+            const span = document.getElementById(field.id);
+            const input = document.createElement("input");
+            input.type = field.type;
+            input.value = field.value;
+            input.id = field.id;
+            if (span) span.replaceWith(input);
+        });
+
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "Save Changes";
+        saveBtn.addEventListener("click", () => {
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const newValue = input.value || input.textContent;
+                const span = document.createElement("span");
+                span.id = field.id;
+                span.textContent = newValue;
+                input.replaceWith(span);
+
+                if (field.id === "profileName") {
+                    const headerName = document.querySelector('.profile-container h1');
+                    if (headerName) headerName.textContent = newValue;
                 }
-            }
+
+                localStorage.setItem(field.id, newValue);
+            });
+
+            saveBtn.remove();
         });
 
-        saveBtn.remove(); // remove the Save button after saving
+        profileTab.appendChild(saveBtn);
     });
 
-    profileTab.appendChild(saveBtn);
-    });
-    
-document.addEventListener("DOMContentLoaded", () => {
+    // =======================
+    // Profile picture
+    // =======================
     const fileInput = document.getElementById("profileUpload");
-    const profileBtn = document.getElementById("profileBtn");
-
-    if (fileInput && profileBtn) {
-        fileInput.addEventListener("change", function () {
-            const file = this.files[0];
-            if (file && file.type.startsWith("image/")) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    // Remove the existing SVG avatar if present
-                    const existingAvatar = profileBtn.querySelector(".avatar");
-                    if (existingAvatar) {
-                        existingAvatar.remove();
-                    }
-
-                    // Create an img element for the uploaded image
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.alt = "Profile picture";
-                    img.classList.add("avatar-img"); // style in CSS
-
-                    profileBtn.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("profileUpload");
-    const profileBtn = document.getElementById("profileBtn");
-
-    // Helper function to set the avatar image
-    function setAvatarImage(imageSrc) {
-    // Remove all children (SVG or old img)
-    while (profileBtn.firstChild) {
-        profileBtn.firstChild.remove();
-    }
-
-    const img = document.createElement("img");
-    img.src = imageSrc;
-    img.alt = "Profile picture";
-    img.classList.add("avatar-img");
-
-    profileBtn.appendChild(img);
-    }
-
-
-    // Load saved image (if any)
-    const savedImage = localStorage.getItem("profileImage");
-    if (savedImage) {
-        setAvatarImage(savedImage);
-    }
-
-    // Handle new uploads
-    if (fileInput && profileBtn) {
-        fileInput.addEventListener("change", function () {
-            const file = this.files[0];
-            if (file && file.type.startsWith("image/")) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const imageData = e.target.result;
-
-                    // Update the button
-                    setAvatarImage(imageData);
-
-                    // Save to localStorage
-                    localStorage.setItem("profileImage", imageData);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("profileUpload");
-    const profileBtn = document.getElementById("profileBtn");
     const customBtn = document.getElementById("customUploadBtn");
     const fileName = document.getElementById("fileName");
 
-    // Helper function to set the avatar image
     function setAvatarImage(imageSrc) {
         const existingAvatar = profileBtn.querySelector(".avatar, .avatar-img");
         if (existingAvatar) existingAvatar.remove();
-
         const img = document.createElement("img");
         img.src = imageSrc;
         img.alt = "Profile picture";
         img.classList.add("avatar-img");
-
         profileBtn.appendChild(img);
     }
 
-    // Load saved image
     const savedImage = localStorage.getItem("profileImage");
-    if (savedImage) {
-        setAvatarImage(savedImage);
-    }
+    if (savedImage) setAvatarImage(savedImage);
 
-    // File input change
     if (fileInput) {
         fileInput.addEventListener("change", () => {
             if (fileInput.files.length === 0) return;
@@ -216,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const imageData = e.target.result;
                 setAvatarImage(imageData);
                 localStorage.setItem("profileImage", imageData);
-
                 if (fileName) {
                     fileName.textContent = file.name;
                     fileName.hidden = false;
@@ -226,69 +152,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Custom button triggers file input
     if (customBtn && fileInput) {
-        customBtn.addEventListener("click", () => {
-            fileInput.click();
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const addProviderBtn = document.getElementById("addProviderBtn");
-    const providerList = document.getElementById("providerList");
-
-    // Load saved providers
-    let providers = JSON.parse(localStorage.getItem("providers")) || [];
-
-    function renderProviders() {
-        providerList.innerHTML = "";
-        if (providers.length === 0) {
-            providerList.innerHTML = "<li class='empty'>No providers added yet.</li>";
-            return;
-        }
-
-        providers.forEach((provider, index) => {
-            const li = document.createElement("li");
-            li.classList.add("provider-item");
-            li.innerHTML = `
-                <span>${provider}</span>
-                <button class="remove-btn" data-index="${index}">Remove</button>
-            `;
-            providerList.appendChild(li);
-        });
+        customBtn.addEventListener("click", () => fileInput.click());
     }
 
-    // Add provider
-    addProviderBtn.addEventListener("click", () => {
-        const name = prompt("Enter provider name:");
-        if (name && name.trim() !== "") {
-            providers.push(name.trim());
-            localStorage.setItem("providers", JSON.stringify(providers));
-            renderProviders();
-        }
-    });
-
-    // Remove provider
-    providerList.addEventListener("click", (e) => {
-        if (e.target.classList.contains("remove-btn")) {
-            const index = e.target.dataset.index;
-            providers.splice(index, 1);
-            localStorage.setItem("providers", JSON.stringify(providers));
-            renderProviders();
-        }
-    });
-
-    renderProviders();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
+    // =======================
+    // Providers & summaries
+    // =======================
     const addProviderBtn = document.getElementById("addProviderBtn");
     const providerList = document.getElementById("providerList");
     const providerTabs = document.getElementById("providerTabs");
     const summaryContent = document.getElementById("summaryContent");
 
-    // Load saved providers
+    const providerPrompt = document.getElementById("providerPrompt");
+    const providerInput = document.getElementById("providerInput");
+    const providerOk = document.getElementById("providerOk");
+    const providerCancel = document.getElementById("providerCancel");
+
     let providers = JSON.parse(localStorage.getItem("providers")) || [];
     let activeProvider = null;
 
@@ -296,34 +176,31 @@ document.addEventListener("DOMContentLoaded", () => {
         providerList.innerHTML = "";
         if (providers.length === 0) {
             providerList.innerHTML = "<li class='empty'>No providers added yet.</li>";
+            providerTabs.innerHTML = "";
+            summaryContent.innerHTML = "<p class='empty'>No providers added yet. Add providers in the 'My Providers' tab.</p>";
             return;
         }
 
         providers.forEach((provider, index) => {
             const li = document.createElement("li");
             li.classList.add("provider-item");
-            li.innerHTML = `
-                <span>${provider}</span>
-                <button class="remove-btn" data-index="${index}">Remove</button>
-            `;
+            li.innerHTML = `<span>${provider}</span>
+                            <button class="remove-btn" data-index="${index}">Remove</button>`;
             providerList.appendChild(li);
         });
+
+        renderProviderTabs();
     }
 
     function renderProviderTabs() {
         providerTabs.innerHTML = "";
-        
-        if (providers.length === 0) {
-            summaryContent.innerHTML = "<p class='empty'>No providers added yet. Add providers in the 'My Providers' tab.</p>";
-            return;
-        }
 
         providers.forEach((provider, index) => {
             const button = document.createElement("button");
             button.classList.add("provider-tab");
             button.textContent = provider;
             button.dataset.provider = provider;
-            
+
             if (index === 0 && !activeProvider) {
                 button.classList.add("active");
                 activeProvider = provider;
@@ -331,77 +208,70 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (activeProvider === provider) {
                 button.classList.add("active");
             }
-            
+
             button.addEventListener("click", () => {
-                document.querySelectorAll(".provider-tab").forEach(tab => {
-                    tab.classList.remove("active");
-                });
+                document.querySelectorAll(".provider-tab").forEach(tab => tab.classList.remove("active"));
                 button.classList.add("active");
                 activeProvider = provider;
                 showSummary(provider);
             });
-            
+
             providerTabs.appendChild(button);
         });
     }
 
     function showSummary(providerName) {
-        // Load summary from localStorage or show placeholder
         const summaries = JSON.parse(localStorage.getItem("providerSummaries")) || {};
         const summary = summaries[providerName] || "No summary available yet.";
-
-        summaryContent.innerHTML = `
-            <div class="summary-card">
-                <h3>${providerName}</h3>
-                <p>${summary}</p>
-            </div>
-        `;
+        summaryContent.innerHTML = `<div class="summary-card">
+                                        <h3>${providerName}</h3>
+                                        <p>${summary}</p>
+                                    </div>`;
     }
 
-    // Add provider
-    addProviderBtn.addEventListener("click", () => {
-        const name = prompt("Enter provider name:");
-        if (name && name.trim() !== "") {
-            providers.push(name.trim());
+    function openProviderPrompt() {
+        providerInput.value = "";
+        providerPrompt.classList.remove("hidden");
+        providerInput.focus();
+    }
+    function closeProviderPrompt() {
+        providerPrompt.classList.add("hidden");
+    }
+
+    providerOk.addEventListener("click", () => {
+        const name = providerInput.value.trim();
+        if (name) {
+            providers.push(name);
             localStorage.setItem("providers", JSON.stringify(providers));
             renderProviders();
-            renderProviderTabs();
-            
-            // Switch to summaries tab to see the new provider
-            const summariesPanel = document.getElementById("summaries");
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            summariesPanel.classList.add('active');
         }
+        closeProviderPrompt();
     });
 
-    // Remove provider
+    providerCancel.addEventListener("click", closeProviderPrompt);
+
+    providerInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") providerOk.click();
+        if (e.key === "Escape") closeProviderPrompt();
+    });
+
+    addProviderBtn.addEventListener("click", openProviderPrompt);
+
     providerList.addEventListener("click", (e) => {
         if (e.target.classList.contains("remove-btn")) {
             const index = e.target.dataset.index;
             const removedProvider = providers[index];
             providers.splice(index, 1);
             localStorage.setItem("providers", JSON.stringify(providers));
-            
-            // Remove summary for this provider
+
             const summaries = JSON.parse(localStorage.getItem("providerSummaries")) || {};
             delete summaries[removedProvider];
             localStorage.setItem("providerSummaries", JSON.stringify(summaries));
-            
-            if (activeProvider === removedProvider) {
-                activeProvider = null;
-            }
-            
+
+            if (activeProvider === removedProvider) activeProvider = null;
             renderProviders();
-            renderProviderTabs();
         }
     });
 
     renderProviders();
-    renderProviderTabs();
-    
-    // Listen for summaries tab being opened to refresh tabs
-    document.addEventListener('summariesTabOpened', () => {
-        providers = JSON.parse(localStorage.getItem("providers")) || [];
-        renderProviderTabs();
-    });
 });
