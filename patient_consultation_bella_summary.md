@@ -1,4 +1,3 @@
-```markdown
 ### Patient Transcript Summary
 
 **Chief Complaint/History of Present Illness:**

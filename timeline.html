@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Timeline</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h1 { text-align: center; }
+
+  #timeline {
+  position: relative; 
+  margin: 40px auto; 
+  border-left: 3px solid #3498db;
+  padding-left: 40px;
+  max-width: 800px;  
+}
+  .bubble {
+    background: #3498db;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    font-weight: bold;
+    position: absolute;
+    left: -35px;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  .bubble:hover { transform: scale(1.2); }
+
+  .label {
+    position: absolute;
+    left: 40px;
+    width: 50vw; /* half the screen */
+    max-width: 600px;
+    min-width: 250px;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #addEventBtn { margin-bottom: 20px; }
+
+  #modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center; 
+    align-items: center;
+  }
+  #modalContent {
+  background: white; 
+  padding: 20px; 
+  border-radius: 8px; 
+  width: auto;         
+  max-width: 90vw;    
+  min-width: 300px;    
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; 
+}
+  #modalContent input, #modalContent textarea {
+    width: 100%; margin-bottom: 10px; padding: 8px;
+  }
+  #modalContent button { padding: 8px 12px; margin: 0 5px; }
+</style>
+</head>
+<body>
+
+<h1>Patient Timeline</h1>
+<button id="addEventBtn">Add Event</button>
+<div id="timeline"></div>
+
+
+<div id="modal">
+  <div id="modalContent">
+    <h3 id="modalTitle">Add Timeline Event</h3>
+    <input type="text" id="eventTitle" placeholder="Title">
+    <input type="date" id="eventDate">
+    <textarea id="eventDesc" placeholder="Clinic Description (Accepts Markdown)"></textarea>
+    <br>
+    <button id="saveEventBtn">Save</button>
+    <button id="cancelBtn">Cancel</button>
+    <button id="deleteEventBtn" style="display:none; background:#e74c3c; color:white;">Delete</button>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+const timeline = document.getElementById('timeline');
+const modal = document.getElementById('modal');
+const addEventBtn = document.getElementById('addEventBtn');
+const saveEventBtn = document.getElementById('saveEventBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const deleteEventBtn = document.getElementById('deleteEventBtn');
+const modalTitle = document.getElementById('modalTitle');
+
+let events = [];
+let editingIndex = null;
+
+// Open modal for adding
+addEventBtn.addEventListener('click', () => {
+  editingIndex = null;
+  modalTitle.textContent = "Add Timeline Event";
+  deleteEventBtn.style.display = 'none';
+  modal.style.display = 'flex';
+});
+
+// Close modal
+cancelBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+  clearModalInputs();
+});
+
+// Save event (add or edit)
+saveEventBtn.addEventListener('click', () => {
+  const title = document.getElementById('eventTitle').value;
+  const date = document.getElementById('eventDate').value;
+  const desc = document.getElementById('eventDesc').value;
+
+  if (!title || !date) {
+    alert("Please enter a title and date.");
+    return;
+  }
+
+  const eventData = { title, date, desc };
+
+  if (editingIndex !== null) {
+    events[editingIndex] = eventData;
+  } else {
+    events.push(eventData);
+  }
+
+  events.sort((a,b) => new Date(a.date) - new Date(b.date));
+  renderTimeline();
+  modal.style.display = 'none';
+  clearModalInputs();
+});
+
+// Delete event
+deleteEventBtn.addEventListener('click', () => {
+  if (editingIndex !== null) {
+    events.splice(editingIndex, 1);
+    renderTimeline();
+    modal.style.display = 'none';
+    clearModalInputs();
+  }
+});
+
+function clearModalInputs() {
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventDate').value = '';
+  document.getElementById('eventDesc').value = '';
+}
+
+// Render timeline with dynamic vertical spacing
+function renderTimeline() {
+  timeline.innerHTML = '';
+  let currentTop = 0; // tracks vertical position dynamically
+  const spacing = 20; // minimum spacing between events
+
+  events.forEach((ev, index) => {
+    // Bubble
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.style.top = `${currentTop}px`;
+    bubble.textContent = (index + 1).toString();
+    timeline.appendChild(bubble);
+
+    // Label
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.style.top = `${currentTop}px`;
+    label.innerHTML = `<strong>${ev.date} - ${ev.title}</strong><div>${marked.parse(ev.desc)}</div>`;
+    label.addEventListener('click', () => {
+      editingIndex = index;
+      modalTitle.textContent = "Edit Timeline Event";
+      deleteEventBtn.style.display = 'inline-block';
+      document.getElementById('eventTitle').value = ev.title;
+      document.getElementById('eventDate').value = ev.date;
+      document.getElementById('eventDesc').value = ev.desc;
+      modal.style.display = 'flex';
+    });
+    timeline.appendChild(label);
+
+    const labelHeight = label.offsetHeight;
+    const bubbleHeight = bubble.offsetHeight;
+    currentTop += Math.max(labelHeight, bubbleHeight) + spacing;
+  });
+
+  timeline.style.height = `${currentTop}px`;
+}
+</script>
+
+
+</body>
+</html>
