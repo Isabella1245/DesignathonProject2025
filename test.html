@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Medical Portal — Login</title>
+    <link rel="stylesheet" href="test.css" />
+    <script src="test.js" defer></script>
+  </head>
+  <body>
+    <main class="login-page" id="main">
+      <h2 class="page-welcome">Welcome!</h2>
+      <div class="card" role="region" aria-labelledby="login-heading">
+        <header class="brand">
+          <div class="logo" aria-hidden="true">🏥</div>
+          <h1 id="login-heading">HealthCare Portal</h1>
+          <p class="tag">Secure access for patients and clinicians</p>
+        </header>
+
+        <!-- in-page success message (hidden until used) -->
+        <div id="successMessage" class="success-message" role="status" aria-live="polite" hidden></div>
+
+        <form class="login-form" id="loginForm" novalidate>
+          <!-- Role selection: Patient (default) vs Provider -->
+          <div class="role-toggle" role="tablist" aria-label="Login role">
+            <button type="button" class="role-btn active" id="patientBtn" aria-pressed="true">Patient</button>
+            <button type="button" class="role-btn" id="providerBtn" aria-pressed="false">Provider</button>
+          </div>
+          <input type="hidden" id="role" name="role" value="patient" />
+
+          <label for="username">Email</label>
+          <input id="username" name="username" type="email" inputmode="email" placeholder="you@example.com" autocomplete="username" required aria-describedby="usernameError" />
+          <div id="usernameError" class="error-text" aria-live="assertive"></div>
+
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input id="password" name="password" type="password" placeholder="Your password" autocomplete="current-password" required minlength="8" aria-describedby="passwordError" />
+            <button type="button" class="btn-toggle" id="togglePassword" aria-pressed="false" aria-label="Show password">
+              <span class="visually-hidden">Show password</span>
+            </button>
+          </div>
+          <div id="passwordError" class="error-text" aria-live="assertive"></div>
+
+          <div class="row options">
+            <label class="checkbox">
+              <input type="checkbox" id="remember" name="remember" />
+              Remember me
+            </label>
+            <a class="forgot" href="#">Forgot?</a>
+          </div>
+
+          <button type="submit" class="btn primary">Sign in</button>
+
+          <div class="alt">
+            <a href="#">Create an account</a>
+            <span aria-hidden="true">·</span>
+            <a href="#">Contact admin</a>
+          </div>
+        </form>
+
+        <!-- Two-factor verification area (hidden until needed) -->
+        <div id="twofa" class="twofa-container" hidden>
+          <h3>Two-factor verification</h3>
+          <p class="muted">Choose how to receive your one-time code</p>
+
+          <div class="methods" role="radiogroup" aria-label="Delivery method">
+            <button type="button" class="method-btn active" data-method="sms" aria-pressed="true">Text message (SMS)</button>
+            <button type="button" class="method-btn" data-method="email" aria-pressed="false">Email</button>
+          </div>
+
+          <div id="twofaStatus" class="twofa-status muted" aria-live="polite" hidden></div>
+
+          <div class="twofa-actions">
+            <button id="sendCodeBtn" type="button" class="btn">Send code</button>
+            <button id="resendBtn" type="button" class="btn" disabled>Resend</button>
+            <span id="resendTimer" class="muted" aria-hidden="true"></span>
+          </div>
+
+          <label for="twofaCode">Enter one-time code</label>
+          <input id="twofaCode" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456" />
+          <div id="twofaError" class="error-text" aria-live="assertive"></div>
+
+          <div class="row options" style="margin-top:8px">
+            <button id="verifyCodeBtn" class="btn primary">Verify</button>
+            <button id="cancel2faBtn" type="button" class="btn">Cancel</button>
+          </div>
+        </div>
+        
+      </div>
+    </main>
+  </body>
+</html>
