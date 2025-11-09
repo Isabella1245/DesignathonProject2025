@@ -24,4 +24,3 @@
 *   Further evaluation by the doctor is indicated to assess the nature and severity of the reported symptoms.
 *   Investigation into potential causes for hallucinations and paranoid ideation.
 *   Discussion and development of a treatment plan.
-```
