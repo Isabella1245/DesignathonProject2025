@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.getElementById('closeBtn');
     const menuItems = document.querySelectorAll('.menu-item');
     const panels = document.querySelectorAll('.tab-panel');
+    const logOutBtn = document.getElementById('logOut');
 
     function openSidebar() {
         sidebar.classList.add('open');
@@ -155,6 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (customBtn && fileInput) {
         customBtn.addEventListener("click", () => fileInput.click());
     }
+
+    logOutBtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
 
     // =======================
     // Providers & summaries

@@ -196,21 +196,33 @@ document.addEventListener('DOMContentLoaded', function () {
   resendBtn?.addEventListener('click', function () { sendCode(currentMethod); });
 
   function verifyCode() {
-    const val = (twofaCodeInput && twofaCodeInput.value || '').trim();
-    if (!val) { twofaError && (twofaError.textContent = 'Please enter the one-time code.'); return; }
-    // Accept any 6-digit code for testing
-    if (!/^\d{6}$/.test(val)) { 
-      twofaError && (twofaError.textContent = 'Please enter a 6-digit code.'); 
-      return; 
-    }
-    // Success: any 6-digit code works
-    generatedCode = null;
-    clearInterval(resendInterval);
-    showTwofa(false);
-    // show final in-page success
-    const role = roleInput ? roleInput.value : 'patient';
-    showSuccess('Signed in as ' + (username.value || '') + ' (' + role + ')');
+  const val = (twofaCodeInput && twofaCodeInput.value || '').trim();
+  if (!val) { 
+    twofaError && (twofaError.textContent = 'Please enter the one-time code.');
+    return; 
   }
+
+  if (!/^\d{6}$/.test(val)) { 
+    twofaError && (twofaError.textContent = 'Please enter a 6-digit code.');
+    return; 
+  }
+
+  // Success: any 6-digit code works
+  generatedCode = null;
+  clearInterval(resendInterval);
+  showTwofa(false);
+
+  const role = roleInput ? roleInput.value : 'patient';
+  showSuccess('Signed in as ' + (username.value || '') + ' (' + role + ')');
+
+  // added a redirect based on if the user toggles patient or provider when they log in
+  if (role === 'patient') {
+    window.location.href = 'patient.html';
+  } else if (role === 'provider') {
+    window.location.href = 'provider.html'; // placeholder for future provider page
+  }
+}
+
 
   verifyCodeBtn?.addEventListener('click', verifyCode);
   cancel2faBtn?.addEventListener('click', function () { generatedCode = null; clearInterval(resendInterval); showTwofa(false); });
