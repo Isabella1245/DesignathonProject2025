@@ -1,3 +1,12 @@
+:root{
+  --bg:#eaf6f6;
+  --card:#ffffff;
+  --accent:#007a87; /* teal */
+  --muted:#6b7280;
+  --radius:12px;
+  --max-width:420px;
+}
+
 .messages-container {
   display: flex;
   gap: 20px;
@@ -7,15 +16,17 @@
 /* Left panel - patient filter */
 .patient-list {
   flex: 1;
-  background-color: #f9fbfd;
+  background-color: #ffffff;
   border-radius: 10px;
   padding: 15px;
+  color: #0f172a;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 .patient-list ul {
   list-style: none;
   padding: 0;
+  color: #0f172a;
 }
 
 .patient-list li {
@@ -23,6 +34,7 @@
   cursor: pointer;
   border-radius: 6px;
   transition: background-color 0.2s;
+  color: #0f172a;
 }
 
 .patient-list li:hover {
@@ -38,6 +50,7 @@
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
   overflow-y: auto;
   max-height: 70vh;
+  
 }
 
 .thread {
@@ -84,7 +97,7 @@
 
 button {
   align-self: flex-end;
-  background-color: #007bff;
+  background-color: #007a87;
   color: white;
   border: none;
   border-radius: 8px;
@@ -93,7 +106,7 @@ button {
 }
 
 button:hover {
-  background-color: #005ec2;
+  background-color: #007a87;
 }
 
 .chat-thread {
@@ -109,7 +122,7 @@ button:hover {
 
 .chat-header {
   padding: 15px 20px;
-  background: #3498db;
+  background: #007a87;
   color: white;
   border-radius: 12px 12px 0 0;
 }
@@ -190,7 +203,7 @@ button:hover {
   margin-left: 10px;
   padding: 10px 16px;
   border: none;
-  background: #3498db;
+  background: #007a87;
   color: white;
   border-radius: 8px;
   cursor: pointer;
@@ -198,5 +211,5 @@ button:hover {
 }
 
 .chat-input button:hover {
-  background: #2980b9;
+  background: #007a87;
 } 

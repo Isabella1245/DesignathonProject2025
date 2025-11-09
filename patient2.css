@@ -1,0 +1,366 @@
+:root{
+    --sidebar-width: 280px;
+    --bg:#eaf6f6;
+    --card:#ffffff;
+    --accent:#007a87;
+    --muted:#6b7280;
+    --radius:12px;
+    --max-width:420px;
+}
+
+*{box-sizing:border-box}
+
+body{
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin:0;
+    background:#fafafa;
+    color:#111;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    padding:12px 16px;
+    background:var(--bg);
+    border-bottom:1px solid #eee;
+}
+
+.profile-container{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+/* Profile icon positioned like provider - fixed top-left */
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    z-index: 1100;
+    object-fit: cover;
+}
+
+.profile-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Move the header name to account for fixed profile icon */
+.profile-container h1 {
+    margin-left: 70px;
+}
+
+.avatar-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden; 
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;    
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+    border-radius: 50%;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+}
+
+#profileBtn {
+    position: relative;
+    z-index: 1100;
+}
+
+/* Sidebar - styled identically to provider */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: #007a87;
+    overflow-x: hidden;
+    padding-top: 80px;
+    transition: 0.5s;
+}
+
+.sidebar.open {
+    width: 250px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    background: none;
+    border: none;
+    color: aliceblue;
+    font-size: 36px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: aquamarine;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    padding: 10px 8px 10px 32px;
+    text-decoration: none;
+    font-size: 22px;
+    color: aliceblue;
+    display: block;
+    transition: 0.3s;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+}
+
+.menu-item:hover {
+    color: aquamarine;
+}
+
+/* Content - matching provider transition */
+.content{
+    padding:20px 16px;
+    margin-left:0;
+    transition: margin-left 0.5s ease;
+}
+
+.sidebar.open ~ .content {
+    margin-left: 250px;
+}
+
+@media(min-width:900px){
+    .sidebar.open ~ .content{
+        margin-left: 250px;
+    }
+}
+
+.tab-content{
+    max-width:900px;
+    margin:0 auto;
+}
+
+.tab-panel{
+    display:none;
+    padding:12px 6px;
+    background:#fff;
+    border-radius:6px;
+    border:1px solid #eee;
+}
+
+.tab-panel.active{
+    display:block;
+}
+
+.provider-controls {
+    margin-bottom: 1em;
+}
+
+.add-btn {
+    background-color: hsl(179, 39%, 49%);
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+    cursor: pointer;
+}
+
+.provider-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.provider-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 0.6em 0.8em;
+    border-radius: 8px;
+    margin-bottom: 0.5em;
+}
+
+.remove-btn {
+    background: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0.3em 0.6em;
+}
+
+.remove-btn:hover {
+    background: #c9302c;
+}
+
+.empty {
+    color: #777;
+    font-style: italic;
+}
+
+.provider-tabs {
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
+    margin-bottom: 1em;
+}
+
+.provider-tab {
+    background-color: #eee;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.provider-tab:hover {
+    background-color: #ddd;
+}
+
+.provider-tab.active {
+    background-color: #007a87;
+    color: white;
+}
+
+.summary-card {
+    background: #f9f9f9;
+    padding: 1em;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.summary-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.summary-content {
+    margin-top: 1em;
+}
+
+.profileEdit {
+    cursor: pointer;
+    background-color:hsl(179, 39%, 49%);
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.profileEdit:hover {
+    background-color: #005f6a;
+}
+
+.logOut {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.logOut:hover {
+    background-color: #c9302c;
+}
+
+.upload-btn {
+    background-color: hsl(179, 39%, 49%);
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.upload-btn:hover {
+    background-color: #005f6a;
+}
+
+.modal.hidden { 
+    display: none; 
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+}
+
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.modal-buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.modal-buttons button {
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+#providerOk {
+    background-color: #007a87;
+    color: white;
+}
+
+#providerOk:hover {
+    background-color: #005f6a;
+}
+
+#providerCancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+#providerCancel:hover {
+    background-color: #999;
+}

@@ -1,7 +1,11 @@
 :root {
-  --bg: #f5f5dc;
   --text: #000000;
-  --accent: #f0f8ff;
+  --bg:#eaf6f6;
+  --card:#ffffff;
+  --accent:#007a87; /* teal */
+  --muted:#6b7280;
+  --radius:12px;
+  --max-width:420px;
 }
 
 body {
@@ -22,7 +26,7 @@ h2 {
   z-index: 1000;
   top: 0;
   left: 0; 
-  background-color: black;
+  background-color: #007a87;
   overflow-x: hidden;
   padding-top: 80px;
   transition: 0.5s;
@@ -94,13 +98,14 @@ h2 {
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     text-align: center;
+    color: #0f172a;
     padding: 15px;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .patient-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2)
+    box-shadow: 0 8px 16px rgba(0,122,135,0.3);
 }
 
 .patient-photo {
@@ -115,13 +120,13 @@ h2 {
 .patient-name {
     margin-top: 10px;
     font-size: 18px;
-    color: var(--text);
+    color: #0f172a;
     font-weight: 500;
 }
 
 .patient-link {
     text-decoration: none;
-    color: inherit;
+    color: #0f172a;
 }
 
 .patient-link .patient-card {
@@ -131,7 +136,7 @@ h2 {
 
 .patient-link .patient-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(0,122,135,0.3);
 }
 
 .patient-profile {
@@ -150,8 +155,8 @@ h2 {
     margin-left: 20px;
     margin-bottom: 5px;
     padding: 8px 16px;
-    background-color: antiquewhite;
-    color: black;
+    background-color: #007a87;
+    color: white;
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;
@@ -159,24 +164,16 @@ h2 {
 }
 
 .back-button:hover {
-    background-color: #7fffd4;
+    background-color: #005f6a;
     transform: scale(1.05);
 }
 
 .timeline {
     position: relative;
     margin: 40px auto;
-    border-left: 3px solid #3498db;
+    border-left: 3px solid #007a87;
     padding-left: 40px;
     max-width: 800px;
-}
-
-.timeline {
-  position: relative;
-  margin: 40px auto;
-  padding-left: 40px;
-  max-width: 800px;
-  border-left: 3px solid #3498db; 
 }
 
 .timeline-item {
@@ -192,15 +189,15 @@ h2 {
   top: 5px;
   width: 16px;
   height: 16px;
-  background-color: #3498db;
+  background-color: #007a87;
   border-radius: 50%;
   border: 3px solid #fff; 
-  box-shadow: 0 0 0 2px #3498db; 
+  box-shadow: 0 0 0 2px #007a87; 
 }
 
 .timeline-date {
   font-weight: bold;
-  color: #3498db;
+  color: #007a87;
   margin-bottom: 4px;
 }
 
@@ -222,7 +219,7 @@ h2 {
 }
 
 .timeline-item:hover::before {
-  background-color: #2a7ec0;
+  background-color: #005f6a;
   transform: scale(1.15);
   transition: transform 0.2s, background-color 0.2s;
 }
@@ -231,7 +228,7 @@ h2 {
   display: block;
   margin: 0 auto 20px;
   padding: 10px 18px;
-  background-color: #3498db;
+  background-color: #007a87;
   color: white;
   border: none;
   border-radius: 8px;
@@ -240,7 +237,7 @@ h2 {
 }
 
 #addEventBtn:hover {
-  background-color: #2a7ec0;
+  background-color: #005f6a;
 }
 
 #modal {
@@ -275,11 +272,44 @@ h2 {
   width: 100%;
   margin-bottom: 10px;
   padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 #modalContent button {
   padding: 8px 12px;
   margin: 0 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#saveEventBtn {
+  background-color: #007a87;
+  color: white;
+}
+
+#saveEventBtn:hover {
+  background-color: #005f6a;
+}
+
+#cancelBtn {
+  background-color: #6b7280;
+  color: white;
+}
+
+#cancelBtn:hover {
+  background-color: #4b5563;
+}
+
+#deleteEventBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+#deleteEventBtn:hover {
+  background-color: #c0392b;
 }
 
 .provider-profile-page #main {
@@ -294,6 +324,7 @@ h2 {
     margin: 40px auto;
     padding: 30px;
     text-align: center;
+    color: #0f172a
 }
 
 .provider-photo {
@@ -328,7 +359,7 @@ h2 {
 
 .provider-details h2 {
   margin-top: 20px;
-  color: #2a7ec0;
+  color: #0f172a;
 }
 
 .provider-details ul {
@@ -339,3 +370,17 @@ h2 {
   margin-bottom: 5px;
 }
 
+.logOut {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.logOut:hover {
+  background-color: #c9302c;
+}

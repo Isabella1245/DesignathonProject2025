@@ -1,3 +1,19 @@
+// Mock accounts for demo
+const MOCK_ACCOUNTS = {
+  patient: {
+    email: "katya@patient.com",
+    password: "patient123",
+    role: "patient",
+    name: "Katya"
+  },
+  provider: {
+    email: "drgator@provider.com",
+    password: "provider123",
+    role: "provider",
+    name: "Dr. Gator"
+  }
+};
+
 // Consolidated demo JS: eye icon toggle, role selection, inline errors, in-page success, and remember-me (localStorage)
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('loginForm');
@@ -76,12 +92,40 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (err) { console.warn('localStorage error', err); }
   }
 
+  // Sync Katya's data from patient to provider view
+  function syncKatyaData() {
+    const katyaData = {
+      name: localStorage.getItem('profileName') || 'Katya',
+      dob: localStorage.getItem('profileDOB') || '01/01/1990',
+      gender: localStorage.getItem('profileGender') || 'Female',
+      email: localStorage.getItem('profileEmail') || 'katya@patient.com',
+      phone: localStorage.getItem('profilePhoneNum') || '123-456-7890',
+      address: localStorage.getItem('profileAddress') || '1234',
+      insurance: localStorage.getItem('profileInsurance') || 'insurance provider',
+      pharmacy: localStorage.getItem('profilePharmacy') || '5678',
+      primaryClinic: localStorage.getItem('profilePrimaryClinic') || 'clinic',
+      profileImage: localStorage.getItem('profileImage') || null
+    };
+    
+    localStorage.setItem('katya_patient_data', JSON.stringify(katyaData));
+  }
+
+  // Validate credentials against mock accounts
+  function validateCredentials(email, pass, role) {
+    if (role === 'patient' && email === MOCK_ACCOUNTS.patient.email && pass === MOCK_ACCOUNTS.patient.password) {
+      return { valid: true, account: MOCK_ACCOUNTS.patient };
+    }
+    if (role === 'provider' && email === MOCK_ACCOUNTS.provider.email && pass === MOCK_ACCOUNTS.provider.password) {
+      return { valid: true, account: MOCK_ACCOUNTS.provider };
+    }
+    return { valid: false };
+  }
+
   patientBtn?.addEventListener('click', () => setRoleUI('patient'));
   providerBtn?.addEventListener('click', () => setRoleUI('provider'));
 
   if (toggle && password) {
     setToggleIcon(password.getAttribute('type') === 'text');
-    // Prevent the button from taking focus on mousedown and refocus the input after toggle
     toggle.addEventListener('mousedown', function (e) { e.preventDefault(); });
     toggle.addEventListener('click', function () {
       const isHidden = password.getAttribute('type') === 'password';
@@ -98,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
     if (stored && stored.remember) {
       if (stored.username) username.value = stored.username;
-      if (stored.password) password.value = stored.password;  // Restore password if saved
+      if (stored.password) password.value = stored.password;
       if (stored.role) setRoleUI(stored.role);
       remember.checked = true;
     }
@@ -108,13 +152,48 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     clearErrors();
     let valid = true;
-    if (!username.value.trim()) { showError(usernameError, 'Please enter your email or username.'); if (valid) username.focus(); valid = false; }
-    else if (username.type === 'email' && username.validity && username.validity.typeMismatch) { showError(usernameError, 'Please enter a valid email address.'); if (valid) username.focus(); valid = false; }
-    if (!password.value) { showError(passwordError, 'Please enter your password.'); if (valid) password.focus(); valid = false; }
-    else if (password.value.length < 8) { showError(passwordError, 'Password must be at least 8 characters.'); if (valid) password.focus(); valid = false; }
+    
+    const emailVal = username.value.trim();
+    const passVal = password.value;
+    const role = roleInput.value;
+    
+    if (!emailVal) { 
+      showError(usernameError, 'Please enter your email or username.'); 
+      if (valid) username.focus(); 
+      valid = false; 
+    } else if (username.type === 'email' && username.validity && username.validity.typeMismatch) { 
+      showError(usernameError, 'Please enter a valid email address.'); 
+      if (valid) username.focus(); 
+      valid = false; 
+    }
+    
+    if (!passVal) { 
+      showError(passwordError, 'Please enter your password.'); 
+      if (valid) password.focus(); 
+      valid = false; 
+    } else if (passVal.length < 8) { 
+      showError(passwordError, 'Password must be at least 8 characters.'); 
+      if (valid) password.focus(); 
+      valid = false; 
+    }
+    
     if (!valid) return;
+    
+    // Validate credentials
+    const authResult = validateCredentials(emailVal, passVal, role);
+    if (!authResult.valid) {
+      showError(usernameError, 'Invalid email or password for selected role.');
+      return;
+    }
+    
     persistIfNeeded();
-    // Instead of immediately signing in, start two-factor verification
+    
+    // If logging in as Katya, sync her data
+    if (role === 'patient' && authResult.account.name === 'Katya') {
+      syncKatyaData();
+    }
+    
+    // Start two-factor verification
     startTwoFactor();
   });
 
@@ -139,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function showTwofa(show) {
     if (!twofaDiv) return;
     twofaDiv.hidden = !show;
-    // hide original form when showing 2fa
     const formEl = document.getElementById('loginForm');
     if (formEl) formEl.hidden = show;
   }
@@ -179,7 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function sendCode(method) {
     generatedCode = ('' + Math.floor(100000 + Math.random() * 900000));
-    // Simulate sending: in a real app you'd call an API. Here we log it for testing.
     console.info('[2FA] Sending code via', method, 'code=', generatedCode);
     if (twofaStatus) {
       twofaStatus.hidden = false;
@@ -196,44 +273,44 @@ document.addEventListener('DOMContentLoaded', function () {
   resendBtn?.addEventListener('click', function () { sendCode(currentMethod); });
 
   function verifyCode() {
-  const val = (twofaCodeInput && twofaCodeInput.value || '').trim();
-  if (!val) { 
-    twofaError && (twofaError.textContent = 'Please enter the one-time code.');
-    return; 
+    const val = (twofaCodeInput && twofaCodeInput.value || '').trim();
+    if (!val) { 
+      twofaError && (twofaError.textContent = 'Please enter the one-time code.');
+      return; 
+    }
+
+    if (!/^\d{6}$/.test(val)) { 
+      twofaError && (twofaError.textContent = 'Please enter a 6-digit code.');
+      return; 
+    }
+
+    // Success: any 6-digit code works
+    generatedCode = null;
+    clearInterval(resendInterval);
+    showTwofa(false);
+
+    const role = roleInput ? roleInput.value : 'patient';
+    showSuccess('Signed in as ' + (username.value || '') + ' (' + role + ')');
+
+    // Redirect based on role
+    if (role === 'patient') {
+      window.location.href = 'patient.html';
+    } else if (role === 'provider') {
+      window.location.href = 'provider.html';
+    }
   }
-
-  if (!/^\d{6}$/.test(val)) { 
-    twofaError && (twofaError.textContent = 'Please enter a 6-digit code.');
-    return; 
-  }
-
-  // Success: any 6-digit code works
-  generatedCode = null;
-  clearInterval(resendInterval);
-  showTwofa(false);
-
-  const role = roleInput ? roleInput.value : 'patient';
-  showSuccess('Signed in as ' + (username.value || '') + ' (' + role + ')');
-
-  // added a redirect based on if the user toggles patient or provider when they log in
-  if (role === 'patient') {
-    window.location.href = 'patient.html';
-  } else if (role === 'provider') {
-    window.location.href = 'provider.html'; // placeholder for future provider page
-  }
-}
-
 
   verifyCodeBtn?.addEventListener('click', verifyCode);
-  cancel2faBtn?.addEventListener('click', function () { generatedCode = null; clearInterval(resendInterval); showTwofa(false); });
+  cancel2faBtn?.addEventListener('click', function () { 
+    generatedCode = null; 
+    clearInterval(resendInterval); 
+    showTwofa(false); 
+  });
 
   function startTwoFactor() {
-    // Show 2FA UI and auto-send to the default method
     showTwofa(true);
-    // mark default method active
     const active = methodBtns.find(b => b.classList.contains('active')) || methodBtns[0];
     if (active) pickMethod(active);
-    // auto-send immediately for demo
     setTimeout(() => sendCode(currentMethod), 250);
   }
 });
