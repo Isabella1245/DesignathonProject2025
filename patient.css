@@ -189,6 +189,15 @@ body{
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.summary-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.summary-content {
+    margin-top: 1em;
+}
+
 .profileEdit {
     cursor: pointer;
     background-color:hsl(179, 39%, 49%)
