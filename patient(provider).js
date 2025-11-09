@@ -30,49 +30,62 @@ const patients = [
         name: "Katya",
         age: 21,
         photo: "patient.png",
-        data: getKatyaData() // Load synced data
+        data: getKatyaData(), // Load synced data
+        defaultTimeline: ["mockPatientData/patient_consultation_katya_summary.md"]
     },
     {
         id: 2,
         name: "Evan",
         age: 25,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_evan_summary.md"]
     },
     {
         id: 3,
         name: "Rhyan",
         age: 30,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_rhyan_summary.md"]
     },
     {
         id: 4,
         name: "Isabella",
         age: 27,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_bella_summary.md"]
     },
     {
         id: 5,
         name: "John",
         age: 34,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_john_summary.md"]
     },
     {
         id: 6,
         name: "Matthew",
         age: 67,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_matthew1_summary.md",
+                          "mockPatientData/patient_consultation_matthew2_summary.md",
+                          "mockPatientData/patient_consultation_matthew3_summary.md"
+        ]
     },
     {
         id: 7,
         name: "Carmen",
         age: 18,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_carman_summary.md",
+                          "mockPatientData/patient_consultation_carman2_summary.md"
+        ]
     },
     {
         id: 8,
         name: "Jamie",
         age: 45,
         photo: "patient.png",
+        defaultTimeline: ["mockPatientData/patient_consultation_jamie_summary.md"]
     }
 ];
 
