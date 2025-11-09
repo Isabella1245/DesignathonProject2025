@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="patient.css">
+        <title>Home</title>
+    </head>
+    <body>
+        <header class="topbar">
+            <div class="profile-container">
+                <!-- default empty profile avatar (click to open sidebar) -->
+                <button id="profileBtn" class="avatar-btn" aria-label="Open menu">
+                    <svg class="avatar" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="12" cy="8" r="3.2" fill="#e6e6e6"></circle>
+                        <path d="M4 20c0-3.3 4.3-6 8-6s8 2.7 8 6" fill="#e6e6e6"></path>
+                    </svg>
+                </button>
+                <h1>Katya</h1>
+            </div>
+        </header>
+
+        <!-- Sidebar (hidden by default) -->
+        <aside id="sidebar" class="sidebar" aria-hidden="true">
+            <button id="closeBtn" class="close-btn" aria-label="Close menu">&times;</button>
+            <nav class="menu" role="navigation" aria-label="Patient menu">
+                <button class="menu-item" data-tab="profile">Profile</button>
+                <button class="menu-item" data-tab="summaries">Summaries</button>
+                <button class="menu-item" data-tab="providers">My Providers</button>
+                <button class="menu-item" data-tab="settings">Settings</button>
+                <button class="menu-item" data-tab="privacy">Privacy</button>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section id="tab-content" class="tab-content">
+                <div id="profile" class="tab-panel">
+                    <h2>Example Patient</h2>
+                    <form id="profileForm">
+                        <label for="profileUpload">Profile Picture:</label>
+                        <input type="file" id="profileUpload" name="profile-pic" accept="image/*" hidden>
+                        <button type="button" id="customUploadBtn" class="upload-btn">Choose Image</button>
+                        <span id="fileName" class="file-name" hidden>No file chosen</span>
+                    </form>
+                    <p>Name: <span id="profileName">Katya</span></p>
+                    <p>DOB: <span id="profileDOB">01/01/1990</span></p>
+                    <p>Gender: <span id="profileGender">Female</span></p>
+
+                    <h2>Contact Information</h2>
+
+                    <p>Email: <span id="profileEmail">sample@gmail.com</span></p>
+                    <p>Phone Number: <span id="profilePhoneNum">123-456-7890</span></p>
+                    <p>Address: <span id="profileAddress">1234</span></p>
+
+                    <h2>Other Information</h2>
+
+                    <p>Insurance: <span id="profileInsurance">insurance provider</span></p>
+                    <p>Pharmacy address: <span id="profilePharmacy">5678</span></p>
+                    <p>Primary Clinic: <span id="profilePrimaryClinic">clinic</span></p>
+                    <p></p>
+                    <button id="logOut" class="logOut">Log Out</button>
+                    <!--will take the user back to the sign in screen-->
+
+                </div>
+                <div id="summaries" class="tab-panel active">
+                    <h2>Summaries</h2>
+                    <div id="providerTabs" class="provider-tabs"></div>
+                    <div id="summaryContent" class="summary-content">
+                        <p class="empty">Select a provider to view their summary.</p>
+                    </div>
+                </div>
+
+                <div id="providers" class="tab-panel">
+                    <h2>My Providers</h2>
+                    <div class="provider-controls">
+                        <button id="addProviderBtn" class="add-btn">+ Add Provider</button>
+                    </div>
+
+                    <ul id="providerList" class="provider-list">
+                        <!-- Providers will appear here -->
+                    </ul>
+
+                </div>
+                <div id="settings" class="tab-panel">
+                    <h2>Settings</h2>
+                    <p>Settings will appear here.</p>
+                    <button id="editProfile" class="profileEdit">Edit Profile</button>
+                </div>
+                <div id="privacy" class="tab-panel">
+                    <h2>Privacy</h2>
+                    <p>Privacy options will appear here.</p>
+                </div>
+            </section>
+        </main>
+        <div id="providerPrompt" class="modal hidden">
+            <div class="modal-content">
+                <h3>Add Provider</h3>
+                <input type="text" id="providerInput" placeholder="Enter provider name" />
+                <div class="modal-buttons">
+                    <button id="providerOk">OK</button>
+                    <button id="providerCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <script src="patient.js"></script>
+    </body>
+</html>
+
