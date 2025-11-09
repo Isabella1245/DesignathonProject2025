@@ -1,0 +1,151 @@
+/* Minimal, responsive styles for the medical login page */
+:root{
+  --bg:#eaf6f6;
+  --card:#ffffff;
+  --accent:#007a87; /* teal */
+  --muted:#6b7280;
+  --radius:12px;
+  --max-width:420px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Arial,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  background:linear-gradient(180deg,var(--bg),#ffffff);
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.login-page{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:32px;
+}
+.page-welcome{
+  text-align:center;
+  font-size:24px;
+  margin:0 0 12px 0;
+  color:var(--accent);
+}
+.success-message{
+  margin:8px 0 12px 0;
+  padding:10px 12px;
+  border-radius:8px;
+  background:linear-gradient(90deg,#e6fff8,#f0fff9);
+  color: #035556;
+  border:1px solid rgba(0,122,135,0.12);
+  font-weight:600;
+  text-align:center;
+}
+.error-text{
+  color:#b91c1c; /* red */
+  font-size:13px;
+  margin-top:6px;
+  min-height:18px;
+}
+.card{
+  width:100%;
+  max-width:var(--max-width);
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:0 6px 30px rgba(12,36,44,0.12);
+  padding:28px;
+}
+.brand{
+  text-align:center;
+  margin-bottom:18px;
+}
+.logo{font-size:40px;line-height:1}
+.brand h1{margin:.35rem 0 0;font-size:20px}
+.brand .tag{margin:6px 0 0;color:var(--muted);font-size:13px}
+.login-form{display:flex;flex-direction:column;gap:10px}
+label{font-size:13px;color:var(--muted)}
+input[type="email"],input[type="password"]{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid #e6eef0;
+  background:#fbfeff;
+  font-size:15px;
+}
+.role-toggle{display:flex;gap:8px;margin-bottom:6px}
+.role-btn{
+  flex:1;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid #d9eef0;
+  background:#f8fbfb;
+  cursor:pointer;
+  font-weight:600;
+  color:var(--muted);
+}
+.role-btn.active{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+}
+.password-wrapper{display:block;position:relative}
+.password-wrapper input{width:100%;padding-right:48px}
+.password-wrapper .btn-toggle{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  padding:6px;
+  width:34px;
+  height:34px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  color:var(--muted);
+}
+.password-wrapper .btn-toggle svg{width:18px;height:18px;fill:currentColor}
+.visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+
+/* Hide native password reveal/clear controls in various browsers */
+input[type="password"]::-ms-clear,
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-password-toggle-button {
+  display: none !important;
+}
+input[type="password"]{
+  -webkit-appearance:none;
+  appearance:none;
+}
+.row.options{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.checkbox{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.forgot{color:var(--accent);text-decoration:none;font-size:13px}
+.btn{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-size:15px}
+.btn.primary{background:var(--accent);color:#fff}
+.alt{margin-top:10px;text-align:center;color:var(--muted);font-size:13px}
+.alt a{color:var(--accent);text-decoration:none}
+.legal{margin-top:14px;text-align:center;color:#9aa3ad;font-size:12px}
+
+/* Two-factor (2FA) styles */
+.twofa-container{margin-top:14px;padding:12px;border-radius:10px;background:#fcffff;border:1px solid rgba(6,20,24,0.03)}
+.twofa-container h3{margin:0 0 6px 0;font-size:16px}
+.methods{display:flex;gap:8px;margin:8px 0}
+.method-btn{flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef0;background:#f8fbfb;cursor:pointer;font-weight:600;color:var(--muted)}
+.method-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.twofa-status{margin:8px 0;padding:8px;border-radius:8px;background:linear-gradient(90deg,#f7fbff,#f6fff8);border:1px solid rgba(0,122,135,0.06)}
+.twofa-actions{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.muted{color:var(--muted);font-size:13px}
+
+
+/* focus states: prefer :focus-visible so mouse clicks don't show outlines; keyboard users still get focus rings */
+input:focus, input:focus-visible {outline:3px solid rgba(0,122,135,0.12);outline-offset:2px}
+.btn:focus-visible, .forgot:focus-visible, .alt a:focus-visible, .role-btn:focus-visible{outline:3px solid rgba(0,122,135,0.12);outline-offset:2px}
+
+@media (max-width:420px){
+  .card{padding:20px;border-radius:10px}
+}
