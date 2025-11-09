@@ -72,7 +72,7 @@ def summarize_transcript(text, model_name, ui_instance):
     ui_instance.update_status("Generating Medical Summary...")
     response = client.models.generate_content(
         model=model_name,
-        contents=[f"Todays date is{recording_date}. Summarize this long transcript concisely for a doctor, focusing on symptoms, medication changes, and follow-up plans, and format the output as a clean markdown block with headings and bullet points:\n\n---\n\n{text}"]
+        contents=[f"Print todays date {recording_date}. Summarize this long transcript concisely for a doctor, focusing on symptoms, medication changes, and follow-up plans, and format the output as a clean markdown block with headings and bullet points:\n\n---\n\n{text}"]
     )
     return response.text
 
