@@ -18,4 +18,3 @@
 ### Follow-up Plans:
 
 *   No specific follow-up plans mentioned in the provided transcript.
-```

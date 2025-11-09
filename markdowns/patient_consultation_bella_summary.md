@@ -18,4 +18,3 @@
 **Follow-Up Plans:**
 
 *   The patient began seeking medical attention for these symptoms ("I went to the doctor and they, um..."). The remainder of the transcript regarding the doctor's actions and any subsequent plans is missing.
-```
