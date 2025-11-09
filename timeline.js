@@ -45,20 +45,25 @@ function renderTimeline() {
     const timelineContainer = document.getElementById("timeline");
     timelineContainer.innerHTML = "";
 
+    // Sort events by date
     events.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    events.forEach((event,index) => {
+    events.forEach((event, index) => {
         const item = document.createElement("div");
         item.classList.add("timeline-item");
+
+        // Use innerHTML and allow <br> in desc
         item.innerHTML = `
             <div class="timeline-date">${event.date}</div>
             <div class="timeline-title">${event.title}</div>
             <div class="timeline-details">${event.desc}</div>
         `;
+
         item.addEventListener("click", () => editEvent(index));
         timelineContainer.appendChild(item);
     });
 }
+
 
 function editEvent(index) {
     const event = events[index];

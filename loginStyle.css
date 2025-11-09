@@ -149,3 +149,11 @@ input:focus, input:focus-visible {outline:3px solid rgba(0,122,135,0.12);outline
 @media (max-width:420px){
   .card{padding:20px;border-radius:10px}
 }
+
+.logo-img {
+  width: 250px;     /* adjust size as needed */
+  height: 100px;
+  object-fit: contain;  /* ensures it scales nicely */
+  display: block;
+  margin: 0 auto;  /* centers it if needed */
+}

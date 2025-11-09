@@ -31,7 +31,22 @@ const patients = [
         age: 21,
         photo: "patient.png",
         data: getKatyaData(), // Load synced data
-        defaultTimeline: ["mockPatientData/patient_consultation_katya_summary.md"]
+        defaultTimeline: [{
+            date: "2025-11-05",
+            title: "Consultation with Katya: Potential Kidney Stones",
+            desc: "Pain: Intense, intermittent lower back and flank pain.<br>Pain radiates towards the lower abdomen.<br>Pain is severe enough to cause discomfort in all positions, including during sleep.<br>Dysuria (painful urination).<br>Dark, reddish urine.\nIntermittent nausea.<br>Patient reports feeling generally unwell.<br>Patient suspects kidney stones.<br>No other reported medical history and no current medications."
+        },
+        {
+            date: "2025-11-10",
+            title: "Consultation with Katya: Robotics Accident",
+            desc: "SPatient reports complete loss of sensation in both legs.<br>Patient states a robot ran over their legs while they were programming it. They were standing, and the robot hit their legs, causing them to collapse.<br>Patient is currently using a wheelchair and requires assistance for mobility.<br>Patient denies any pain in their legs at this time.<br>Patient indicates the robot's disable button was not functioning.<br>No new medications prescribed or changes made during this interaction.<br>Due to the significant neurological deficit (loss of leg sensation) and the mechanism of injury, urgent assessment by a medical professional is necessary to determine the cause and extent of the injury."
+        },
+        {
+            date: "2023-11-12",
+            title: "Consultation with Katya: Follow up on accident, possible developing schitzophrenia",
+            desc: "Auditory hallucinations: Hearing voices that are not identifiable.<br>Visual hallucinations: Seeing vague figures of people who are not present.<br>Racing thoughts and impaired focus.<br>Difficulty with processing and connecting thoughts.<br>Suspiciousness towards others.<br>Difficulty trusting and communicating.<br>Feeling confused, stressed, and not like their usual self.<br>No medication changes reported.<br>Further evaluation is recommended to investigate into potential causes for hallucinations and paranoid ideation."
+            
+        }]
     },
     {
         id: 2,
@@ -66,10 +81,8 @@ const patients = [
         name: "Matthew",
         age: 67,
         photo: "patient.png",
-        defaultTimeline: ["mockPatientData/patient_consultation_matthew1_summary.md",
-                          "mockPatientData/patient_consultation_matthew2_summary.md",
-                          "mockPatientData/patient_consultation_matthew3_summary.md"
-        ]
+        defaultTimeline: ["mockPatientData/patient_consultation_katya_summary.md"]
+        
     },
     {
         id: 7,
@@ -138,6 +151,11 @@ if (patient) {
     `;
   }
 
-  events = patient.timeline ? patient.timeline.slice() : [];
+  // Assign events for timeline
+  events = (patient.id === 1 && patient.defaultTimeline) 
+      ? patient.defaultTimeline.slice()  // use Katya's defaultTimeline array of objects
+      : [];  // empty for other patients (or you can handle them later)
   renderTimeline();
+
+
 }
