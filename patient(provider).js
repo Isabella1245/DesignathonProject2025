@@ -102,9 +102,25 @@ const patients = [
     }
 ];
 
+// --- Determine which patient to load ---
 const params = new URLSearchParams(window.location.search);
-const id = params.get('id');
+let id = params.get('id');
+
+// ✅ Default to Katya (id = 1) if no ?id provided
+if (!id) {
+  console.warn("No patient ID found in URL — defaulting to Katya (id=1)");
+  id = 1;
+}
+
 const patient = patients.find(p => p.id == id);
+
+// If no patient found at all, show fallback message
+if (!patient) {
+  document.getElementById("profileContainer").innerHTML = `
+    <p style="text-align:center; color:#666;">No patient data found.</p>
+  `;
+  throw new Error("No valid patient found — check your ID or data structure.");
+}
 
 if (patient) {
   const profileContainer = document.getElementById("profileContainer");
