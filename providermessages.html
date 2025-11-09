@@ -1,26 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8"/>
-        <title>My Patients</title>
-        <link rel="stylesheet" href="style.css"/>
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages | Provider Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="messages.css" />
+  </head>
 
-    <body>
-        <img src="profileproviderimage.jpg" alt="Profile" class="profile-icon" onclick="openNav()"/>
-        <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="providerprofile.html">Profile</a>
-            <a href="provider.html">My Patients</a>
-            <a href="providermessages.html">Messages</a>
-            <a href="providerinvitations.html">Invitations</a>
-            
+  <body>
+    <!-- Profile Icon -->
+    <img
+      src="profileproviderimage.jpg"
+      alt="Profile"
+      class="profile-icon"
+      onclick="openNav()"
+    />
+
+    <!-- Sidebar Navigation -->
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+        >&times;</a
+      >
+      <a href="providerprofile.html">Profile</a>
+      <a href="provider.html">My Patients</a>
+      <a href="providermessages.html">Messages</a>
+      <a href="providerinvitations.html">Invitations</a>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main">
+      <h1>Messages</h1>
+
+      <!-- Patient Filter Sidebar -->
+      <div class="patient-list">
+        <h3>Patients</h3>
+        <ul id="patientFilter">
+          <li onclick="filterMessages('All')">All Patients</li>
+          <li onclick="filterMessages('Katya')">Katya</li>
+          <li onclick="filterMessages('Evan')">Evan</li>
+          <li onclick="filterMessages('Rhyan')">Rhyan</li>
+          <li onclick="filterMessages('Isabella')">Isabella</li>
+          <li onclick="filterMessages('John')">John</li>
+          <li onclick="filterMessages('Matthew')">Matthew</li>
+          <li onclick="filterMessages('Carmen')">Carmen</li>
+          <li onclick="filterMessages('Jamie')">Jamie</li>
+        </ul>
+      </div>
+
+      <!-- Message Threads Section -->
+      <div class="message-threads">
+        <h3>Conversations</h3>
+
+        <div id="messageThreads">
+          <!-- Example Thread: Katya Tipps -->
+          <div class="chat-thread" data-patient="Katya Tipps">
+            <div class="chat-header">
+              <h2>Patient: Katya Tipps</h2>
+              <p>
+                Conversation between
+                <strong>Dr. Morales (Primary Care)</strong> and
+                <strong>Dr. Chen (Rheumatology)</strong>
+              </p>
+            </div>
+
+            <div class="chat-messages">
+              <div class="message from-other">
+                <strong>Dr. Chen:</strong>
+                <p>
+                  Katya's lupus symptoms have been fluctuating — are her latest
+                  lab results showing any changes in ANA or dsDNA levels?
+                </p>
+                <span class="timestamp">9:15 AM</span>
+              </div>
+
+              <div class="message from-me">
+                <strong>Dr. Morales:</strong>
+                <p>
+                  Her recent labs show slightly elevated dsDNA but stable
+                  complement levels. No new flare indicators at this time.
+                </p>
+                <span class="timestamp">9:21 AM</span>
+              </div>
+
+              <div class="message from-other">
+                <strong>Dr. Chen:</strong>
+                <p>
+                  Good to hear — I'll maintain her hydroxychloroquine dose and
+                  reassess in two weeks unless symptoms worsen.
+                </p>
+                <span class="timestamp">9:34 AM</span>
+              </div>
+
+              <div class="message from-me">
+                <strong>Dr. Morales:</strong>
+                <p>
+                  Understood. I'll check in with her regarding fatigue and joint
+                  pain during next week's visit.
+                </p>
+                <span class="timestamp">9:41 AM</span>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <input
+                type="text"
+                placeholder="Type a message..."
+                id="messageInput"
+              />
+              <button id="sendBtn">Send</button>
+            </div>
+          </div>
         </div>
-    
-        <div id="main">
-            <h1>Messages</h1>
-        </div>
-        <script src="script.js"></script>
-    </body>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
-    
