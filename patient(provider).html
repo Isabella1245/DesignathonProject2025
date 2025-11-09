@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Profile</title>
+    
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <img src="profileproviderimage.jpg" alt="Profile" class="profile-icon" onclick="openNav()"/>
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="providerprofile.html">Profile</a>
+            <a href="provider.html">My Patients</a>
+            <a href="providermessages.html">Messages</a>
+            <a href="providerinvitations.html">Invitations</a>
+        </div>
+
+        <div id="main" class="patient-main">
+            <a href="provider.html" class="back-button">← Back to Dashboard</a>
+            <h1>Patient Details</h1>
+            <div id="profileContainer" class="patient-profile"></div>
+
+            <h2>Visit History</h2>
+            <button id="addEventBtn">Add Event</button>
+            <div id="timeline" class="timeline"></div>
+        </div>
+
+        <div id="modal">
+            <div id="modalContent">
+                <h3 id="modalTitle">Add Timeline Event</h3>
+                <input type="text" id="eventTitle" placeholder="Title" />
+                <input type="date" id="eventDate" />
+                <textarea id="eventDesc" placeholder="Clinic Description (Accepts Markdown)"></textarea>
+                <br />
+                <button id="saveEventBtn">Save</button>
+                <button id="cancelBtn">Cancel</button>
+                <button id="deleteEventBtn" style="display:none; background:#e74c3c; color:white;">Delete</button>
+            </div>
+        </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+    <script src="patient(provider).js"></script>
+    <script src="timeline.js"></script>
+</body>
+</html>
