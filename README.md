@@ -1,3 +1,30 @@
+# Timeline Maker
+
+**Description:**  
+A web-based interactive timeline tool that allows users to add, edit, and delete chronological events.  
+Each event can include a Markdown-formatted description that is rendered in real-time.
+
+**Features:**  
+- Add new events with a title, date, and Markdown description.  
+- Click existing events to edit or delete them.  
+- Dynamic vertical spacing prevents overlaps for long descriptions.  
+- Responsive design: timeline scales to half the screen width and centers on the page.  
+- Markdown support!
+
+**Dependencies:**  
+- No other installation required; the tool runs in any modern browser.
+
+**Usage:**  
+1. Open `timeline.html` in your browser.  
+2. Click **Add Event** to create a new timeline event.  
+3. Click any existing event to edit or delete.  
+4. Markdown entered in the description field will render automatically.
+
+**Notes:**  
+- Events are automatically sorted chronologically by date.  
+- The timeline dynamically adjusts spacing so events do not overlap.  
+- All data is stored in memory—refreshing the page will clear your events.  
+
 # Gemini Medical Summarizer
 
 **Description:**  
@@ -14,4 +41,6 @@ It is designed as a proof-of-concept for a web service that allows healthcare pr
 Install the required Python packages using pip:
 
 ```bash
-pip install numpy pandas sounddevice google-genai
+pip install numpy pandas sounddevice google-genai ```
+
+
